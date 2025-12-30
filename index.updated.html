@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SwapSquare – Barter Marketplace</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- Toast -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- =========================
+       AUTH (LOGIN / SIGNUP)
+  ========================== -->
+  <section id="authSection" class="auth-shell">
+    <div class="auth-left">
+      <h1 class="auth-hero-title">Swap what you don’t need,<br />for what you love.</h1>
+      <p class="auth-hero-sub">Smart bartering. Zero cash. 100% value.</p>
+    </div>
+
+    <div class="auth-right">
+      <div class="auth-card">
+        <div class="auth-brand">
+          <h2>SwapSquare</h2>
+          <p>Trade your unused things for something you’ll love – no money needed.</p>
+        </div>
+
+        <div class="auth-tabs">
+          <button id="loginTab" class="tab-btn active" type="button">Log In</button>
+          <button id="signupTab" class="tab-btn" type="button">Sign Up</button>
+        </div>
+
+        <!-- Login -->
+        <form id="loginForm" class="auth-form">
+          <label>Email</label>
+          <input id="loginEmail" type="email" placeholder="you@example.com" required />
+
+          <label>Password</label>
+          <input id="loginPassword" type="password" placeholder="••••••••" required />
+
+          <button class="btn primary" type="submit">Log In</button>
+        </form>
+
+        <!-- Signup -->
+        <form id="signupForm" class="auth-form hidden">
+          <label>Name</label>
+          <input id="signupName" type="text" placeholder="Your name" required />
+
+          <label>City</label>
+          <input id="signupCity" type="text" placeholder="Winnipeg" required />
+
+          <label>Email</label>
+          <input id="signupEmail" type="email" placeholder="you@example.com" required />
+
+          <label>Password</label>
+          <input id="signupPassword" type="password" placeholder="Create a password" required />
+
+          <button class="btn primary" type="submit">Create Account</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================
+       MAIN APP
+  ========================== -->
+  <section id="mainSection" class="hidden">
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">S</div>
+        <div>
+          <div class="brand-name">SwapSquare</div>
+          <div class="brand-tag">Barter what you don’t need for what you do ✨</div>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <div id="userBadge" class="user-badge"></div>
+        <button id="logoutBtn" class="btn ghost">Log Out</button>
+      </div>
+    </header>
+
+    <!-- Nav -->
+    <nav class="nav">
+      <button class="nav-link active" data-target="homeSection" type="button">Home</button>
+      <button class="nav-link" data-target="browseSection" type="button">Browse Items</button>
+      <button class="nav-link" data-target="myItemsSection" type="button">My Items</button>
+      <button class="nav-link" data-target="swapsSection" type="button">
+        Swaps <span id="swapsBadge" class="badge hidden"></span>
+      </button>
+      <button class="nav-link" data-target="messagesSection" type="button">
+        Messages <span id="messagesBadge" class="badge hidden"></span>
+      </button>
+    </nav>
+
+    <!-- =========================
+         HOME
+    ========================== -->
+    <section id="homeSection" class="page-section">
+      <div class="container home-grid">
+        <div class="home-copy">
+          <h1 class="page-title big">Welcome to SwapSquare</h1>
+          <p class="page-sub big">
+            Turn your unused shoes, gadgets, and clothes into something new —
+            by swapping directly with other people. No payments, just fair trades.
+          </p>
+
+          <div class="btn-row">
+            <button class="btn primary" data-target="browseSection" type="button">Browse Items</button>
+            <button class="btn secondary" data-target="myItemsSection" type="button">Post an Item</button>
+          </div>
+        </div>
+
+        <div class="home-card">
+          <div class="pill">Example swap</div>
+          <div class="swap-graphic">
+            <div class="swap-side">
+              <div class="swap-emoji">👟</div>
+              <div class="swap-title">Your shoes</div>
+              <div class="swap-sub">Like New</div>
+            </div>
+            <div class="swap-mid">⇄</div>
+            <div class="swap-side">
+              <div class="swap-emoji">🎧</div>
+              <div class="swap-title">Their headset</div>
+              <div class="swap-sub">Good</div>
+            </div>
+          </div>
+          <p class="muted">
+            Propose a swap, accept or reject, then use <b>Messages</b> to coordinate your exchange.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+         BROWSE
+    ========================== -->
+    <section id="browseSection" class="page-section hidden">
+      <div class="container">
+        <h2 class="page-title">Browse Items</h2>
+        <p class="page-sub">Find something you want and propose a swap using one of your items.</p>
+
+        <div class="filters">
+          <input id="searchInput" class="input" type="text" placeholder="Search by item name or description..." />
+
+          <select id="categoryFilter" class="input">
+            <option value="">All categories</option>
+            <option>Clothing</option>
+            <option>Electronics</option>
+            <option>Home &amp; Furniture</option>
+            <option>Books</option>
+            <option>Toys &amp; Games</option>
+            <option>Other</option>
+          </select>
+
+          <label class="check">
+            <input id="sameCityOnly" type="checkbox" />
+            <span>Only show my city</span>
+          </label>
+
+          <label class="check">
+            <input id="hideOwnItems" type="checkbox" checked />
+            <span>Hide my items</span>
+          </label>
+        </div>
+
+        <div id="browseEmptyMsg" class="empty hidden">No items match your filters.</div>
+        <div id="browseItemsGrid" class="items-grid"></div>
+      </div>
+    </section>
+
+    <!-- =========================
+         MY ITEMS
+    ========================== -->
+    <section id="myItemsSection" class="page-section hidden">
+      <div class="container two-col">
+        <div class="panel">
+          <h3>Add a new item</h3>
+          <p class="muted">Each user can post up to <b>3</b> items.</p>
+
+          <form id="addItemForm" class="form">
+            <label>Title</label>
+            <input id="itemTitle" class="input" type="text" placeholder="e.g. Nike Running Shoes (Size 9)" required />
+
+            <label>Category</label>
+            <select id="itemCategory" class="input" required>
+              <option value="" selected disabled>Select a category</option>
+              <option>Clothing</option>
+              <option>Electronics</option>
+              <option>Home &amp; Furniture</option>
+              <option>Books</option>
+              <option>Toys &amp; Games</option>
+              <option>Other</option>
+            </select>
+
+            <label>Condition</label>
+            <select id="itemCondition" class="input" required>
+              <option>Like New</option>
+              <option>Good</option>
+              <option>Used</option>
+              <option>Well Worn</option>
+            </select>
+
+            <label>City (where item is located)</label>
+            <input id="itemCity" class="input" type="text" placeholder="Winnipeg" required />
+
+            <!-- ✅ NEW: image upload (1-3 required, enforced by script.js) -->
+            <label>Images (upload 1–3)</label>
+            <input id="itemImages" class="input" type="file" accept="image/*" multiple />
+            <small class="hint">Upload at least 1 image. Max 3 images.</small>
+
+            <label>Description</label>
+            <textarea id="itemDescription" class="input" rows="4" placeholder="Describe the item, size, color, etc." required></textarea>
+
+            <button class="btn primary" type="submit">Post Item</button>
+          </form>
+        </div>
+
+        <div class="panel">
+          <h3>Your listings</h3>
+          <div id="myItemsEmptyMsg" class="empty hidden">No items posted yet.</div>
+          <div id="myItemsList" class="my-items-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+         SWAPS
+    ========================== -->
+    <section id="swapsSection" class="page-section hidden">
+      <div class="container">
+        <h2 class="page-title">Swap Requests</h2>
+        <p class="page-sub">See swaps you proposed and requests others sent for your items.</p>
+
+        <div class="two-col">
+          <div class="panel">
+            <h3>Incoming swaps (for your items)</h3>
+            <div id="incomingEmptyMsg" class="empty hidden">No one has proposed a swap for your items yet.</div>
+            <div id="incomingSwapsList" class="swap-list"></div>
+          </div>
+
+          <div class="panel">
+            <h3>Outgoing swaps (you proposed)</h3>
+            <div id="outgoingEmptyMsg" class="empty hidden">You haven’t proposed any swaps yet.</div>
+            <div id="outgoingSwapsList" class="swap-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+         MESSAGES
+    ========================== -->
+    <section id="messagesSection" class="page-section hidden">
+      <div class="container">
+        <h2 class="page-title">Messages</h2>
+        <p class="page-sub">Chat only with people you’ve successfully matched with (accepted swaps only).</p>
+
+        <div class="two-col messages-grid">
+          <div class="panel">
+            <h3>Conversations</h3>
+            <div id="conversationsEmptyMsg" class="empty hidden">No accepted swaps yet.</div>
+            <div id="conversationsList" class="swap-list"></div>
+          </div>
+
+          <div class="panel">
+            <h3 id="conversationTitle">Select a conversation</h3>
+            <p id="conversationSubtitle" class="muted"></p>
+
+            <div id="conversationMessages" class="conversation-box"></div>
+
+            <form id="conversationForm" class="chat-form hidden">
+              <input id="conversationInput" class="input" type="text" placeholder="Type a message..." />
+              <button class="btn primary" type="submit">Send</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+         ITEM DETAIL MODAL
+    ========================== -->
+    <div id="itemDetailModal" class="modal hidden">
+      <div class="modal-card">
+        <!-- ✅ robust close: id + class -->
+        <button id="closeItemDetailModal" class="modal-close" type="button">×</button>
+
+        <div class="detail-grid">
+          <!-- Left: Image + thumbs -->
+          <div class="detail-media">
+            <img id="detailMainImage" class="detail-main-img" alt="Item image" />
+            <div id="detailThumbs" class="detail-thumbs"></div>
+          </div>
+
+          <!-- Right: details + swap -->
+          <div class="detail-content">
+            <h2 id="detailTitle" class="detail-title">Item title</h2>
+            <div id="detailMeta" class="detail-meta">Category · Condition · City · Posted by</div>
+
+            <div class="detail-desc-wrap">
+              <div id="detailDesc" class="detail-desc"></div>
+            </div>
+
+            <div class="detail-swap">
+              <h3>Propose a swap</h3>
+              <p class="muted">Choose one of your active items to offer.</p>
+
+              <div id="detailLockedNote" class="note hidden"></div>
+              <div id="detailSwapNoItemsMsg" class="note hidden">No available items to offer.</div>
+
+              <!-- styled by CSS as themed select -->
+              <select id="detailOfferSelect" class="themed-select">
+                <option value="">Select one of your items</option>
+              </select>
+
+              <button id="sendSwapFromDetailBtn" class="btn primary" type="button">Send Swap Request</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+  import { 
+    getAuth,
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    signInWithPopup,
+    GoogleAuthProvider,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDyXzsGi09m0AmyHZ3s0YSOjiTj9x_3C5w",
+    authDomain: "tradeit-bd082.firebaseapp.com",
+    projectId: "tradeit-bd082",
+    storageBucket: "tradeit-bd082.firebasestorage.app",
+    messagingSenderId: "1045380502754",
+    appId: "1:1045380502754:web:842b2d3e8fb856f1e27abb",
+    measurementId: "G-P6N3WGY6Q0"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // ✅ expose BOTH the auth instance and the helper functions (script.js expects this shape)
+  window.firebaseAuth = auth;
+  window.fbAuth = {
+    auth,
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    signInWithPopup,
+    GoogleAuthProvider,
+    signOut
+  };
+</script>
+
+
+
+  <script src="script.js"></script>
+</body>
+</html>
